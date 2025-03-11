@@ -34,6 +34,7 @@ We have shared part of the thyroid ultrasound dataset for verification. Please r
     - Data Retention: Approved data will be available for 2 years from the date of publication.
 
 This dataset contains 100 breast ultrasound images, categorized into seven subtypes of breast carcinoma:
+
 | Subtype | Number |
 | :------ | -----: |
 | Benign Fibroadenoma (BF) | 100|
@@ -43,6 +44,7 @@ This dataset contains 100 breast ultrasound images, categorized into seven subty
 | Invasive Lobular Carcinoma (ILC) | 20|
 | Invasive Breast Cancer Non-special (IBCN) | 100 |
 | Invasive Breast Cancer Undefined (IBCU) | 100 |
+
 More labels(BI-RADS, lymph node) could be found in baseline.excel
 
 ## Usage
