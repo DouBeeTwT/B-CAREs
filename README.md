@@ -35,15 +35,16 @@ We have shared part of the thyroid ultrasound dataset for verification. Please r
 
 This dataset contains 100 breast ultrasound images, categorized into seven subtypes of breast carcinoma:
 
-| Subtype | Number |
-| :------ | -----: |
-| Benign Fibroadenoma (BF) | 100|
-| Ductal Carcinoma In Situ (DCIS)  |100|
-| Lobular Carcinoma In Situ (LCIS) | 20|
-| Invasive Ductal Carcinoma (IDC)  |100|
-| Invasive Lobular Carcinoma (ILC) | 20|
-| Invasive Breast Cancer Non-special (IBCN) | 100 |
-| Invasive Breast Cancer Undefined (IBCU) | 100 |
+| Subtype                                   | Image Number | Label Number|
+| :---------------------------------------- | -----: | -----: |
+| Benign Fibroadenoma (BF)                  |      0 |      0 |
+| Ductal Carcinoma In Situ (DCIS)           |     20 |      0 |
+| Lobular Carcinoma In Situ (LCIS)          |      0 |      0 |
+| Invasive Ductal Carcinoma (IDC)           |      0 |      0 |
+| Invasive Lobular Carcinoma (ILC)          |     40 |      0 |
+| Invasive Breast Cancer Non-special (IBCN) |     70 |      0 |
+| Invasive Breast Cancer Undefined (IBCU)   |     40 |      0 |
+| Sum                                       |    130 |      0 |
 
 More labels(BI-RADS, lymph node) could be found in baseline.excel
 
