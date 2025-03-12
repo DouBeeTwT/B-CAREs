@@ -46,7 +46,12 @@ This dataset contains 100 breast ultrasound images, categorized into seven subty
 | Invasive Breast Cancer Undefined (IBCU)   |           40 |          40 |
 | Sum                                       |          430 |         430 |
 
-More labels(BI-RADS, lymph node) could be found in baseline.excel
+More labels(BI-RADS, lymph node) could be found in dataset/baseline.csv and the infomation structure like below:
+
+
+|PictureName|BIRADS|Lymph| Age |Gender|Size|FamilyHistory|Menophania|Period|Duration|Pregnant|Menopause|Smoke|Drink|
+|:----------|-----:|----:|----:|-----:|---:|------------:|---------:|-----:|-------:|-------:|==------:|----:|----:|
+|BIC_0009   |     3|    0|   81|Female|17.8|            0|        12|    33|       4|      No|      Yes|   No|   No|
 
 ## Usage
 1. train models
