@@ -37,14 +37,14 @@ This dataset contains 100 breast ultrasound images, categorized into seven subty
 
 | Subtype                                   | Image Number | Label Number|
 | :---------------------------------------- | -----: | -----: |
-| Benign Fibroadenoma (BF)                  |      0 |      0 |
+| Benign Fibroadenoma (BF)                  |    190 |      0 |
 | Ductal Carcinoma In Situ (DCIS)           |     20 |      0 |
-| Lobular Carcinoma In Situ (LCIS)          |      0 |      0 |
-| Invasive Ductal Carcinoma (IDC)           |      0 |      0 |
+| Lobular Carcinoma In Situ (LCIS)          |     10 |      0 |
+| Invasive Ductal Carcinoma (IDC)           |     60 |      0 |
 | Invasive Lobular Carcinoma (ILC)          |     40 |      0 |
 | Invasive Breast Cancer Non-special (IBCN) |     70 |      0 |
 | Invasive Breast Cancer Undefined (IBCU)   |     40 |      0 |
-| Sum                                       |    130 |      0 |
+| Sum                                       |    430 |      0 |
 
 More labels(BI-RADS, lymph node) could be found in baseline.excel
 
