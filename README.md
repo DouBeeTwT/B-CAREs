@@ -49,9 +49,19 @@ This dataset contains 100 breast ultrasound images, categorized into seven subty
 More labels(BI-RADS, lymph node) could be found in dataset/baseline.csv and the infomation structure like below:
 
 
-|PictureName|BIRADS|Lymph| Age |Gender|Size|FamilyHistory|Menophania|Period|Duration|Pregnant|Menopause|Smoke|Drink|
-|:----------|-----:|----:|----:|-----:|---:|------------:|---------:|-----:|-------:|-------:|==------:|----:|----:|
-|BIC_0009   |     3|    0|   81|Female|17.8|            0|        12|    33|       4|      No|      Yes|   No|   No|
+| PictureName | BIRADS | Lymph |  Age  | Gender | Size | FamilyHistory | Menophania | Period | Duration |Pregnant | Menopause | Smoke | Drink |
+| :---------- | -----: | ----: | ----: | -----: | ---: | ------------: | ---------: | -----: | -------: |-------: | --------: | ----: | ----: |
+| BIC_0009    |      3 |     0 |    81 | Female | 17.8 |             0 |         12 |     33 |        4 |      No |       Yes |    No |    No |
+
+## Model Weight
+
+Download model .pth files by your self
+
+| Task Name | Download to |Link |
+| :---------| :----- |:----|
+| BI-RADS   | pth/BIRADS  | https://pan.sjtu.edu.cn/web/share/ef3c18cf0557a22a5d65b35fca88e442 |
+| Subtype   | pth/Subtype | https://pan.sjtu.edu.cn/web/share/34371324234abf37f70ff9b4e43a1f99 |
+| Lymph     | pth/Lymph   | https://pan.sjtu.edu.cn/web/share/12b42e150ee920db0388446254c7342b |
 
 ## Usage
 1. train models
