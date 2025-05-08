@@ -67,7 +67,7 @@ Download model .pth files by your self
 1. train models
 ```python
 python train.py --root {YOUR DATA PATHWAY} --device cuda --batch_size 32 --learning_rate 1e-3 --epoch_max 150 --epoch_qp 120 \
-                --class_num {YOUR CLASS NUMBER} --backbone_name StarNet --protonet_nameDeepLabV3 \
+                --class_num {YOUR CLASS NUMBER} --backbone_name StarNet --protonet_name DeepLabV3 \
                 --loss_weight [0.8,1.0,1.0,1.0,1.0] --base_num 4 --score_threshold 0.05 --nms_threshold 0.6 --max_object_num 7 \
                 --seed 1
 # For more details of parameters， please use
