@@ -79,7 +79,7 @@ For training step, you may use several minutes to several hours depend on your d
 ```python
 python report.py
 ```
-For trst step, the demo shows a single patient report just with around one minute.
+For testing step, the demo shows a single patient report just with around one minute.
 
 ## Citing
 If you use our code and any information in your research, please consider citing with the following BibTex.
