@@ -73,11 +73,13 @@ python train.py --root {YOUR DATA PATHWAY} --device cuda --batch_size 32 --learn
 # For more details of parameters， please use
 python train.py --help
 ```
+For training step, you may use several minutes to several hours depend on your dataset size and GPU.
 
 2. test models
 ```python
 python report.py
 ```
+For trst step, the demo shows a single patient report just with around one minute.
 
 ## Citing
 If you use our code and any information in your research, please consider citing with the following BibTex.
