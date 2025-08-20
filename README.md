@@ -53,6 +53,10 @@ More labels(BI-RADS, lymph node) could be found in dataset/baseline.csv and the 
 | :---------- | -----: | ----: | ----: | -----: | ---: | ------------: | ---------: | -----: | -------: |-------: | --------: | ----: | ----: |
 | BIC_0009    |      3 |     0 |    81 | Female | 17.8 |             0 |         12 |     33 |        4 |      No |       Yes |    No |    No |
 
+
+This dataset is provided for non-commercial educational and testing purposes, specifically for research related to LLNM classification.
+If you need to apply for access, please note that temporary or unreliable email addresses should not be used. We will check the security of the application accounts.
+
 ## Model Weight
 
 Download model .pth files by your self
