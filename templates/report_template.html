@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>B-CAREs report</title>
+<style>
+  body { font-family: Helvetica, Arial, sans-serif; color: #1d1d1f; margin: 32px auto; max-width: 900px; line-height: 1.5; }
+  header { border-bottom: 2px solid #4D8872; padding-bottom: 8px; margin-bottom: 24px; }
+  h1 { font-size: 22px; margin: 0 0 4px 0; }
+  .sub { color: #6e6e73; font-size: 13px; }
+  h2 { font-size: 16px; color: #4D8872; margin-top: 28px; border-left: 3px solid #4D8872; padding-left: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { border-bottom: 1px solid #e5e5e7; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f5f5f7; font-weight: 600; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .total { font-size: 16px; font-weight: 700; color: #4D8872; }
+  .figs { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+  .figs figure { margin: 0; width: 190px; }
+  .figs img { width: 100%; border: 1px solid #e5e5e7; }
+  .figs figcaption { font-size: 12px; color: #6e6e73; }
+  .note { font-size: 12px; color: #6e6e73; margin-top: 8px; }
+  footer { margin-top: 36px; border-top: 1px solid #e5e5e7; padding-top: 8px; font-size: 12px; color: #6e6e73; }
+</style>
+</head>
+<body>
+<header>
+  <h1>B-CAREs automated ultrasound report</h1>
+  <div class="sub">Breast Cancer Assessment, Reporting and Risk Stratification &middot; generated {{ Date }}</div>
+</header>
+
+<h2>Patient</h2>
+<table>
+  <tr><th>Age</th><td class="num">{{ Age }}</td><th>Sex</th><td>{{ Gender }}</td></tr>
+  <tr><th>Menopause</th><td>{{ Menopause }}</td><th>Family history</th><td>{{ FamilyHistory }}</td></tr>
+  <tr><th>Smoking</th><td>{{ Smoke }}</td><th>Alcohol</th><td>{{ Drink }}</td></tr>
+</table>
+
+<h2>Model predictions</h2>
+<table>
+  <thead>
+    <tr><th>Task</th><th>Prediction</th><th class="num">Confidence (%)</th><th class="num">Risk contribution</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>BI-RADS</td><td>{{ BIRADS }}</td><td class="num">{{ p_1 }}</td><td class="num">{{ risk_score_1 }}</td></tr>
+    <tr><td>Histological subtype</td><td>{{ Subtype_name }} ({{ Subtype }})</td><td class="num">{{ p_2 }}</td><td class="num">{{ risk_score_2 }}</td></tr>
+    <tr><td>Sentinel lymph node</td><td>{{ Lymph }}</td><td class="num">{{ p_3 }}</td><td class="num">{{ risk_score_3 }}</td></tr>
+    <tr><td>Imaging features</td><td>see below</td><td class="num">&ndash;</td><td class="num">{{ risk_score_4 }}</td></tr>
+  </tbody>
+</table>
+
+<h2>Ultrasound features</h2>
+<p>{{ features }}</p>
+
+<h2>Risk score</h2>
+<p class="total">Total risk score: {{ total_risk_score }}</p>
+<p class="note">The total shown here is the integer sum of the four contributions listed above
+(the score displayed by the reporting module). The prognostic Cox model of the manuscript
+(Eq. 5) applies fitted coefficients to the model-predicted categories and is reported in
+Table 4; the two scores are not interchangeable.</p>
+
+<h2>Impression</h2>
+<p>{{ conclusion }}</p>
+
+<h2>Images</h2>
+<div class="figs">
+  <figure><img src="img.png" alt="input ultrasound"><figcaption>Input image</figcaption></figure>
+  <figure><img src="mask.png" alt="segmentation"><figcaption>Segmentation</figcaption></figure>
+  <figure><img src="score1.png" alt="BI-RADS scores"><figcaption>BI-RADS</figcaption></figure>
+  <figure><img src="score2.png" alt="subtype scores"><figcaption>Subtype</figcaption></figure>
+  <figure><img src="score3.png" alt="SLN scores"><figcaption>Sentinel node</figcaption></figure>
+  <figure><img src="score4.png" alt="feature bars"><figcaption>Imaging features</figcaption></figure>
+  {% if Explain %}<figure><img src="attention.png" alt="attention map"><figcaption>SHAP attention</figcaption></figure>{% endif %}
+</div>
+
+<footer>
+  Generated automatically by B-CAREs. Research prototype &mdash; not a substitute for
+  the judgement of a qualified clinician.
+</footer>
+</body>
+</html>
