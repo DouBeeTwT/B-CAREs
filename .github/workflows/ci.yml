@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit-tests:
+    name: unit tests (python 3.11, CPU)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-torch-cpu.txt
+
+      # The unit tests are pure Python (labels, config, tools), so they run
+      # before any heavy dependency is installed.
+      - name: Install test tooling
+        run: pip install pytest pyyaml pillow numpy
+
+      - name: Unit tests
+        run: >
+          python -m pytest -q
+          tests/test_labels.py tests/test_config.py
+          tests/test_parser_flags.py tests/test_tools.py
+
+  pipeline:
+    name: end-to-end (python 3.11, CPU, random weights)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    needs: unit-tests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-torch-cpu.txt
+
+      - name: Install PyTorch (CPU)
+        run: pip install -r requirements-torch-cpu.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Build a COCO split from the demo data
+        run: python scripts/build_coco.py --task subtype --val-fraction 0.2 --seed 1 --out Data --link
+
+      - name: Training smoke test (one batch, writes nothing)
+        run: >
+          python train.py --config configs/train_multitask.yaml
+          --dry-run --device cpu --batch_size 2 --num_workers 0
+
+      - name: Offline end-to-end demo (random weights, no checkpoints)
+        run: >
+          python demo.py --config configs/demo.yaml --random-weights
+          --device cpu --limit 2 --output_dir reports
+
+      - name: Check the artefacts
+        run: |
+          test -f reports/demo_predictions.csv
+          test -f reports/demo_summary.txt
+          test -f reports/BIC_0009_report/report.html
+
+      - name: Full test suite, including the pipeline tests
+        run: python -m pytest -q
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: demo-report
+          path: reports/
+          retention-days: 14
