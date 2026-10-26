@@ -1,0 +1,34 @@
+# Minimal executable example.
+#
+# Runs the whole pipeline (pre-processing -> three task models -> risk score ->
+# HTML report) on the 430 ultrasound images shipped in dataset/test/img, without
+# any private clinical data, without a GPU and without an LLM API key.
+#
+#   python demo.py --config configs/demo.yaml --random-weights   # no checkpoints needed
+#   python demo.py --config configs/demo.yaml                   # needs the three .pth files
+#
+# Outputs:
+#   reports/demo_predictions.csv   one row per image
+#   reports/demo_summary.txt       agreement with dataset/Baseline.csv (if weights available)
+#   Reports/<image>_report/report.html   one full report, for the first image
+
+input:
+  dir: dataset/test/img
+  labels_csv: dataset/Baseline.csv
+  limit: 20            # number of images to run; 0 = all 430
+
+weights:
+  birads: pth/QPMC_BIRADS_Exp001/Best.pth
+  subtype: pth/BMIL_v4_Exp010/Last.pth
+  lymph: pth/QPMC_Lymph_Exp002/Best.pth
+
+device: auto
+output_dir: reports
+
+batch_size: 4
+subtype_score: paper
+
+# With random weights the networks are not trained; the demo then only proves
+# that data loading, model construction, inference and report rendering work.
+# Accuracy numbers printed in that mode are meaningless.
+random_weights: false

@@ -1,0 +1,43 @@
+# Single-image inference: run the three task models on one ultrasound image and
+# write a full report (HTML + PNG panels) to <output_dir>/<image>_report/.
+#
+#   python report.py --config configs/infer.yaml
+#   python report.py --config configs/infer.yaml --image path/to/other.png --device cpu
+#
+# The three checkpoints are found at the paths below; see docs/WEIGHTS.md for
+# download links, expected file names and checksums.
+
+input:
+  image: dataset/test/img/BIC_0009.png
+
+weights:
+  birads: pth/QPMC_BIRADS_Exp001/Best.pth
+  subtype: pth/BMIL_v4_Exp010/Last.pth
+  lymph: pth/QPMC_Lymph_Exp002/Best.pth
+
+device: auto
+output_dir: Reports
+
+# 0.49 * BI-RADS + 0.51 * subtype + 0.67 * SLN, as in Eq. (5) of the manuscript.
+# "paper" keeps the published subtype lookup; "corrected" changes the score of
+# invasive lobular carcinoma from 1 to 3 (see docs/KNOWN_ISSUES.md).
+subtype_score: paper
+
+clinical:
+  age: 52
+  gender: Female
+  menopause: "No"
+  family_history: "No"
+  smoke: "No"
+  drink: "No"
+
+llm:
+  enabled: false                       # true needs SILICONFLOW_API_KEY, see .env.example
+  base_url: https://api.siliconflow.cn/v1
+  model: deepseek-ai/DeepSeek-V3
+  api_key_env: SILICONFLOW_API_KEY
+  language: English
+
+explain:
+  enabled: false                       # SHAP attention map; slow (~minutes on CPU)
+  shap_max_evals: 200
