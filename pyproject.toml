@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bcares"
+version = "1.1.0"
+description = "B-CAREs: Breast Cancer Assessment, Reporting and Risk Stratification — inference, training and reporting code"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = { text = "MIT" }
+authors = [{ name = "B-CAREs authors" }]
+keywords = ["breast cancer", "ultrasound", "deep learning", "BI-RADS", "multi-task learning"]
+classifiers = [
+  "Programming Language :: Python :: 3.11",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+# Runtime dependencies are installed from requirements.txt (see docs/INSTALL.md),
+# because PyTorch must come from the CUDA/CPU-specific index.
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.urls]
+Homepage = "https://github.com/DouBeeTwT/B-CAREs"
+
+[project.scripts]
+bcares-train = "train:main"
+bcares-report = "report:main"
+bcares-predict = "predict:main"
+bcares-demo = "demo:main"
+
+[tool.setuptools]
+py-modules = ["train", "report", "predict", "demo"]
+
+[tool.setuptools.packages.find]
+include = ["bcares*", "BMIL*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
