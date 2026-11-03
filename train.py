@@ -109,7 +109,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--wandb", action="store_true", help="log to Weights & Biases")
     parser.add_argument("--project_name", default="QPMC_BIRADS", type=str, help="wandb project name")
     parser.add_argument("--exp_name", default="Exp001", type=str, help="experiment name")
-    parser.add_argument("--dry_run", action="store_true", help="build everything, one forward pass, exit")
+    parser.add_argument("--dry-run", "--dry_run", dest="dry_run", action="store_true",
+                        help="build everything, one forward pass, exit")
     return parser
 
 

@@ -149,7 +149,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output_dir", default="reports", type=str)
     parser.add_argument("--batch_size", default=4, type=int, help="reserved; inference is per image")
     parser.add_argument("--limit", default=0, type=int, help="only the first N images (0 = all)")
-    parser.add_argument("--random_weights", action="store_true",
+    parser.add_argument("--random-weights", "--random_weights", dest="random_weights",
+                        action="store_true",
                         help="ignore checkpoints and use random initialisation")
     return parser
 

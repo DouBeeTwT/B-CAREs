@@ -470,7 +470,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--language", default="English", type=str)
     parser.add_argument("--explain", action="store_true", help="add a SHAP attention map (slow)")
     parser.add_argument("--shap_max_evals", default=200, type=int)
-    parser.add_argument("--random_weights", action="store_true",
+    parser.add_argument("--random-weights", "--random_weights", dest="random_weights",
+                        action="store_true",
                         help="skip checkpoints and use random initialisation (pipeline test)")
     return parser
 
