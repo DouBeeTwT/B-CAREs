@@ -8,11 +8,13 @@ dist/
 venv/
 
 # --- Local data / artefacts ---
-Data/
-pth/
-Reports/
-Temp/
-reports/
+# Anchored to the repository root: an unanchored "Data/" would also match
+# BMIL/data/, because git matches ignore patterns case-insensitively on macOS.
+/Data/
+/pth/
+/Reports/
+/Temp/
+/reports/
 *.pth
 *.pt
 *.ckpt
