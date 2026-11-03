@@ -39,6 +39,7 @@ from jinja2 import Environment, FileSystemLoader
 from PIL import Image
 from torch.nn import functional as F
 
+from bcares.boxes import sanitise_box
 from bcares.config import INFER_KEYMAP, parse_with_config, resolve_device
 from bcares.labels import (
     BIRADS_CLASSES,
@@ -180,8 +181,11 @@ def get_score(model_pth, backbone_name, device, class_num, transform, image_pth,
     box = preds["bboxes"][0, 0].detach().cpu().numpy() if bool_box else None
     if bool_mask and bool_box:
         img_bg = cv2.imread(image_pth, cv2.IMREAD_GRAYSCALE)
-        box = np.array(box, dtype=np.int32)
-        mask = cv2.resize(mask, (box[3] - box[1], box[2] - box[0]),
+        height, width = img_bg.shape[:2]
+        # A randomly initialised network can predict a degenerate box; clamp it
+        # (and fall back to the whole image) so that the report still renders.
+        box = np.array(sanitise_box(box, height, width), dtype=np.int32)
+        mask = cv2.resize(mask, (int(box[3] - box[1]), int(box[2] - box[0])),
                           interpolation=cv2.INTER_NEAREST)
         img_mk = np.zeros((img_bg.shape[0], img_bg.shape[1]))
         img_mk[box[0]:box[2], box[1]:box[3]] = mask
