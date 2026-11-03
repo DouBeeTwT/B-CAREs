@@ -385,7 +385,9 @@ def ABCGMS(clinical_info, file_path, device="cuda:0", weights=None, output_root=
     clinical_info["features_score"] = 0
     features_score, features_label = [], []
     for key, value in features.items():
-        if value is None:
+        # A degenerate mask (possible with randomly initialised weights) yields
+        # NaN or inf statistics; treat those as a zero contribution.
+        if value is None or not math.isfinite(float(value)):
             features[key] = 0.0
         features_score.append(features[key])
         features_label.append(key)
