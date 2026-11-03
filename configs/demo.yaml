@@ -26,7 +26,6 @@ device: auto
 output_dir: reports
 
 batch_size: 4
-subtype_score: paper
 
 # With random weights the networks are not trained; the demo then only proves
 # that data loading, model construction, inference and report rendering work.

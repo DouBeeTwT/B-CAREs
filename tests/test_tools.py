@@ -1,19 +1,16 @@
-"""Smoke tests for the two command-line tools (no torch needed)."""
+"""Smoke tests for the command-line tools (no torch needed)."""
 
 from __future__ import annotations
 
 import importlib.util
 import json
-import os
 import shutil
 from pathlib import Path
-
-import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE_IMAGES = ROOT / "dataset" / "test" / "img"
 FIXTURE_MASKS = ROOT / "dataset" / "test" / "lab"
-LABELS = ROOT / "dataset" / "Baseline.csv"
+NAMES = ["FBB_0006", "BIC_0009", "DICS_0054", "IDC_0436", "PBC_0038", "UDF_0040"]
 
 
 def load_script(name: str):
@@ -24,59 +21,71 @@ def load_script(name: str):
     return module
 
 
-def test_build_coco_writes_a_valid_split(tmp_path):
-    build_coco = load_script("build_coco")
-    images = tmp_path / "img"
-    masks = tmp_path / "lab"
+def make_fixture(tmp_path: Path):
+    images, masks = tmp_path / "img", tmp_path / "lab"
     images.mkdir()
     masks.mkdir()
-    names = ["FBB_0006", "BIC_0009", "DICS_0054", "IDC_0436", "PBC_0038", "UDF_0040"]
-    for name in names:
+    for name in NAMES:
         shutil.copy(FIXTURE_IMAGES / f"{name}.png", images / f"{name}.png")
         shutil.copy(FIXTURE_MASKS / f"{name}.png", masks / f"{name}.png")
+    return images, masks
 
+
+def test_build_split_mirrors_the_loader_layout(tmp_path):
+    build = load_script("build_split")
+    images, masks = make_fixture(tmp_path)
     out = tmp_path / "Data"
-    code = build_coco.main(["--images", str(images), "--masks", str(masks),
-                            "--labels", str(LABELS), "--out", str(out),
-                            "--val-fraction", "0.34", "--seed", "1"])
-    assert code == 0
 
-    train = json.loads((out / "train" / "annotations.json").read_text())
-    val = json.loads((out / "val" / "annotations.json").read_text())
-    assert len(train["images"]) + len(val["images"]) == len(names)
-    assert len(train["annotations"]) == len(train["images"])
-    assert {c["id"] for c in train["categories"]} == set(range(1, 8))
-    assert all(1 <= a["category_id"] <= 7 for a in train["annotations"])
-    for annotation in train["annotations"]:
-        x, y, w, h = annotation["bbox"]
-        assert x >= 0 and y >= 0 and w > 0 and h > 0
-        assert annotation["area"] == pytest.approx(w * h)
+    assert build.main(["--images", str(images), "--masks", str(masks),
+                       "--out", str(out), "--val-fraction", "0.34", "--seed", "1"]) == 0
+
+    for split in ("train", "val"):
+        img_dir, lab_dir = out / split / "img", out / split / "lab"
+        assert img_dir.is_dir() and lab_dir.is_dir()
+        # the loader pairs sorted listings, so names must match exactly
+        assert (sorted(p.name for p in img_dir.iterdir())
+                == sorted(p.name for p in lab_dir.iterdir()))
+
+    total = sum(len(list((out / split / "img").iterdir())) for split in ("train", "val"))
+    assert total == len(NAMES)
 
 
-def test_build_coco_is_deterministic(tmp_path):
-    build_coco = load_script("build_coco")
-    args = ["--images", str(FIXTURE_IMAGES), "--masks", str(FIXTURE_MASKS),
-            "--labels", str(LABELS), "--val-fraction", "0.2", "--seed", "1", "--link"]
+def test_build_split_is_deterministic(tmp_path):
+    build = load_script("build_split")
+    images, masks = make_fixture(tmp_path)
+    args = ["--images", str(images), "--masks", str(masks),
+            "--val-fraction", "0.2", "--seed", "3", "--link"]
     first, second = tmp_path / "a", tmp_path / "b"
-    assert build_coco.main(args + ["--out", str(first)]) == 0
-    assert build_coco.main(args + ["--out", str(second)]) == 0
-    a = json.loads((first / "train" / "annotations.json").read_text())
-    b = json.loads((second / "train" / "annotations.json").read_text())
-    assert [i["file_name"] for i in a["images"]] == [i["file_name"] for i in b["images"]]
+    assert build.main(args + ["--out", str(first)]) == 0
+    assert build.main(args + ["--out", str(second)]) == 0
+    for split in ("train", "val"):
+        a = sorted(p.name for p in (first / split / "img").iterdir())
+        b = sorted(p.name for p in (second / split / "img").iterdir())
+        assert a == b
 
 
-def test_build_coco_birads_and_sln_tasks(tmp_path):
-    build_coco = load_script("build_coco")
-    for task, n_classes in (("birads", 5), ("sln", 3)):
-        out = tmp_path / task
-        assert build_coco.main(["--task", task, "--images", str(FIXTURE_IMAGES),
-                                "--masks", str(FIXTURE_MASKS), "--labels", str(LABELS),
-                                "--out", str(out), "--link"]) == 0
-        payload = json.loads((out / "train" / "annotations.json").read_text())
-        assert len(payload["categories"]) == n_classes
+def test_build_split_dry_run_writes_nothing(tmp_path):
+    build = load_script("build_split")
+    images, masks = make_fixture(tmp_path)
+    out = tmp_path / "Data"
+    assert build.main(["--images", str(images), "--masks", str(masks),
+                       "--out", str(out), "--dry-run"]) == 0
+    assert not out.exists()
 
 
-def test_verify_weights_detects_mismatch(tmp_path, capsys):
+def test_build_split_skips_unknown_prefix(tmp_path):
+    build = load_script("build_split")
+    images, masks = make_fixture(tmp_path)
+    shutil.copy(FIXTURE_IMAGES / "IDC_0436.png", images / "ZZZ_0001.png")
+    shutil.copy(FIXTURE_MASKS / "IDC_0436.png", masks / "ZZZ_0001.png")
+    out = tmp_path / "Data"
+    assert build.main(["--images", str(images), "--masks", str(masks), "--out", str(out)]) == 0
+    written = [p.name for split in ("train", "val") for p in (out / split / "img").iterdir()]
+    assert "ZZZ_0001.png" not in written
+    assert len(written) == len(NAMES)
+
+
+def test_verify_weights_detects_mismatch(tmp_path):
     verify = load_script("verify_weights")
     payload = tmp_path / "model.pth"
     payload.write_bytes(b"not really a checkpoint")
@@ -111,5 +120,5 @@ def test_dataset_fixture_counts():
         prefix = path.stem.split("_")[0]
         suffixes[prefix] = suffixes.get(prefix, 0) + 1
     assert suffixes == {"FBB": 190, "BIC": 70, "DICS": 20, "IDC": 60,
-                        "PBC": 40, "LBC": 10, "UDF": 40}
+                        "LBC": 10, "PBC": 40, "UDF": 40}
     assert len(list(FIXTURE_MASKS.glob("*.png"))) == 430

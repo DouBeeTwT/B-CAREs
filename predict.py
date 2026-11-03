@@ -77,7 +77,7 @@ def load_labels(csv_path: Optional[str]) -> Dict[str, Dict[str, int]]:
     return labels
 
 
-def infer_image(path: str, weights: Dict[str, str], device: str, subtype_score_mode: str = "paper",
+def infer_image(path: str, weights: Dict[str, str], device: str,
                 random_weights: bool = False) -> Dict[str, object]:
     """Run the three task models on one image; return a flat result dict."""
     from report import get_score  # imported lazily: report.py pulls in matplotlib/cv2
@@ -97,7 +97,7 @@ def infer_image(path: str, weights: Dict[str, str], device: str, subtype_score_m
     sln_index = int(sln["score"].argmax())
 
     risk_score = (birads_score(birads_index)
-                  + subtype_score(subtype_index, subtype_score_mode)
+                  + subtype_score(subtype_index)
                   + sln_score(sln_index))
 
     return {
@@ -149,7 +149,6 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output_dir", default="reports", type=str)
     parser.add_argument("--batch_size", default=4, type=int, help="reserved; inference is per image")
     parser.add_argument("--limit", default=0, type=int, help="only the first N images (0 = all)")
-    parser.add_argument("--subtype_score", default="paper", choices=["paper", "corrected"])
     parser.add_argument("--random_weights", action="store_true",
                         help="ignore checkpoints and use random initialisation")
     return parser
@@ -166,7 +165,7 @@ def main(argv=None) -> int:
 
     rows = []
     for index, path in enumerate(images, 1):
-        rows.append(infer_image(path, weights, args.device, args.subtype_score, args.random_weights))
+        rows.append(infer_image(path, weights, args.device, args.random_weights))
         if index % 10 == 0 or index == len(images):
             print("[{}/{}] {}".format(index, len(images), os.path.basename(path)))
 

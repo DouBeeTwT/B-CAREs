@@ -27,7 +27,7 @@ because the CUDA and CPU wheels differ.
 
 | Step | Command | Documentation |
 |---|---|---|
-| Build a COCO split from images + masks | `python scripts/build_coco.py --task subtype --out Data` | [DATA_FORMAT.md](DATA_FORMAT.md#4-building-a-training-split) |
+| Build a train/val split from images + masks | `python scripts/build_split.py --out Data` | [DATA_FORMAT.md](DATA_FORMAT.md#4-building-a-training-split) |
 | Smoke-test the training stack | `python train.py --config configs/train_multitask.yaml --dry-run` | [TRAINING_INFERENCE.md](TRAINING_INFERENCE.md#3-smoke-test-before-committing-gpu-hours) |
 | Train | `python train.py --config configs/train_multitask.yaml` | same page |
 | Single-image report | `python report.py --config configs/infer.yaml` | same page |
@@ -52,7 +52,7 @@ by `tests/test_config.py`, so a config cannot silently drift from the code.
 | Input masks | PNG, binary, same stem as the image |
 | Clinical table | `dataset/Baseline.csv`, columns in [DATA_FORMAT.md](DATA_FORMAT.md) |
 | Class order | fixed tables in [DATA_FORMAT.md](DATA_FORMAT.md#2-class-tables), asserted by `tests/test_labels.py` |
-| Training data | COCO: `images[]`, `annotations[]`, `categories[]` |
+| Training data | `<root>/{train,val}/{img,lab}` paired PNG directories; labels come from the filename prefix |
 | Output (single image) | `Reports/<image>_report/{report.html, img.png, mask.png, score1-4.png}` |
 | Output (batch) | `predictions.csv` with one row per image |
 

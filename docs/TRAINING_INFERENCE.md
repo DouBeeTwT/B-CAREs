@@ -7,12 +7,13 @@ Every command below is run from the repository root.
 ### 1. Build a COCO-style split
 
 ```bash
-python scripts/build_coco.py --task subtype --val-fraction 0.2 --seed 1 --out Data
+python scripts/build_split.py --val-fraction 0.2 --seed 1 --out Data
 ```
 
-`--task birads` and `--task sln` build the splits for the other two heads
-(5 and 3 classes). With the full cohort, point `data.root` at your own directory
-that already contains `train/` and `val/` in the format of
+The command writes `Data/train/{img,lab}` and `Data/val/{img,lab}`; the loader
+pairs the two directories by filename and reads the class from the prefix, so
+there is no annotation file to build. With the full cohort, point `data.root` at
+your own directory that already contains `train/` and `val/` in the format of
 [docs/DATA_FORMAT.md](DATA_FORMAT.md).
 
 ### 2. Configure

@@ -18,10 +18,6 @@ weights:
 device: auto
 output_dir: Reports
 
-# 0.49 * BI-RADS + 0.51 * subtype + 0.67 * SLN, as in Eq. (5) of the manuscript.
-# "paper" keeps the published subtype lookup; "corrected" changes the score of
-# invasive lobular carcinoma from 1 to 3 (see docs/KNOWN_ISSUES.md).
-subtype_score: paper
 
 clinical:
   age: 52

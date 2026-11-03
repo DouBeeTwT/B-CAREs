@@ -56,7 +56,7 @@ def main(argv=None) -> int:
 
     rows = []
     for index, path in enumerate(images, 1):
-        rows.append(infer_image(path, weights, args.device, args.subtype_score, args.random_weights))
+        rows.append(infer_image(path, weights, args.device, args.random_weights))
         if index % 5 == 0 or index == len(images):
             print("[{}/{}] done".format(index, len(images)))
 
@@ -88,8 +88,7 @@ def main(argv=None) -> int:
             {"age": 52, "gender": "Female", "menopause": "No", "family": "No",
              "smoke": "No", "drink": "No"},
             images[0], device=args.device, weights=weights, output_root=args.output_dir,
-            llm={"enabled": False}, explain=False, subtype_score_mode=args.subtype_score,
-            random_weights=args.random_weights)
+            llm={"enabled": False}, explain=False, random_weights=args.random_weights)
         print("Report: {}".format(os.path.join(report_dir, "report.html")))
 
     print("\nDemo finished: {} + {}".format(csv_path, summary_path))

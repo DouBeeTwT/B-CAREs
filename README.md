@@ -41,7 +41,7 @@ Early screening for breast cancer using ultrasound has been shown to significant
 | `demo.py` | offline minimal example, runs without weights |
 | `bcares/` | configuration loading and label tables |
 | `configs/` | example configuration files |
-| `scripts/build_coco.py` | images + masks → COCO training split |
+| `scripts/build_split.py` | images + masks → train/val `img` + `lab` layout |
 | `scripts/verify_weights.py` | SHA-256 verification of the checkpoints |
 | `dataset/` | 430 ultrasound images, their masks and `Baseline.csv` |
 | `docs/` | installation, data format, training/inference, weights, reproducibility, troubleshooting |
@@ -109,8 +109,8 @@ dataset/test/lab/        430 masks, same stems
 | 1 | BIC | IBCN | Invasive breast cancer, no special type | 70 |
 | 2 | DICS | DCIS | Ductal carcinoma in situ | 20 |
 | 3 | IDC | IDC | Invasive ductal carcinoma | 60 |
-| 4 | PBC | ILC | Invasive lobular carcinoma | 40 |
-| 5 | LBC | LCIS | Lobular carcinoma in situ | 10 |
+| 4 | LBC | LCIS | Lobular carcinoma in situ | 10 |
+| 5 | PBC | ILC | Invasive lobular carcinoma | 40 |
 | 6 | UDF | IBCU | Invasive breast cancer, undefined | 40 |
 | | | | **Total** | **430** |
 
@@ -151,7 +151,7 @@ python scripts/verify_weights.py     # checks presence, size and SHA-256
 ## Training
 
 ```bash
-python scripts/build_coco.py --task subtype --val-fraction 0.2 --seed 1 --out Data
+python scripts/build_split.py --val-fraction 0.2 --seed 1 --out Data
 python train.py --config configs/train_multitask.yaml --dry-run   # smoke test, writes nothing
 python train.py --config configs/train_multitask.yaml             # 150 epochs
 ```

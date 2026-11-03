@@ -254,7 +254,7 @@ def calc_features(msk, img, box):
     return features
 
 
-def switch(name: str, index: int, score_mode: str = "paper"):
+def switch(name: str, index: int):
     """Map a class index to the human-readable value used in the report."""
     feature_labels = {
         "Roundness": ["regular edge", "not smooth edge"],
@@ -266,7 +266,7 @@ def switch(name: str, index: int, score_mode: str = "paper"):
     if name == "Subtype":
         return subtype_category(index)
     if name == "Subtype_score":
-        return subtype_score(index, score_mode)
+        return subtype_score(index)
     if name == "BIRADS":
         return birads_label(index)
     if name == "Lymph":
@@ -333,8 +333,7 @@ def deepseek_conclusion(clinical_info, language="English", base_url="https://api
 # end-to-end report
 # --------------------------------------------------------------------------- #
 def ABCGMS(clinical_info, file_path, device="cuda:0", weights=None, output_root="Reports",
-           llm=None, explain=False, shap_max_evals=200, subtype_score_mode="paper",
-           random_weights=False):
+           llm=None, explain=False, shap_max_evals=200, random_weights=False):
     """Build the full report for one image and return the output directory."""
     weights = weights or {}
     llm = llm or {}
@@ -361,7 +360,7 @@ def ABCGMS(clinical_info, file_path, device="cuda:0", weights=None, output_root=
     clinical_info["Subtype"] = subtype_category(idx)
     clinical_info["Subtype_code"] = subtype_code(idx)
     clinical_info["Subtype_name"] = subtype_name(idx)
-    clinical_info["Subtype_score"] = subtype_score(idx, subtype_score_mode)
+    clinical_info["Subtype_score"] = subtype_score(idx)
     plot_scores(score=results_subtype["score"], labels=SUBTYPE_OUTPUT_NAMES,
                 fig_name="score2.png", dir_name=dir_name)
 
@@ -458,8 +457,6 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--lymph_weights", default="pth/QPMC_Lymph_Exp002/Best.pth", type=str)
     parser.add_argument("--device", default="auto", type=str, help="auto | cpu | cuda:0 ...")
     parser.add_argument("--output_dir", default="Reports", type=str)
-    parser.add_argument("--subtype_score", default="paper", choices=["paper", "corrected"],
-                        help="subtype risk-score lookup (see docs/KNOWN_ISSUES.md)")
     parser.add_argument("--age", default=52, type=int)
     parser.add_argument("--gender", default="Female", type=str)
     parser.add_argument("--menopause", default="No", type=str)
@@ -494,8 +491,7 @@ def main(argv=None) -> int:
                  weights={"birads": args.birads_weights, "subtype": args.subtype_weights,
                           "lymph": args.lymph_weights},
                  output_root=args.output_dir, llm=llm, explain=args.explain,
-                 shap_max_evals=args.shap_max_evals, subtype_score_mode=args.subtype_score,
-                 random_weights=args.random_weights)
+                 shap_max_evals=args.shap_max_evals, random_weights=args.random_weights)
     print("Report written to {}".format(os.path.join(out, "report.html")))
     return 0
 

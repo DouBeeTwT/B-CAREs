@@ -11,6 +11,13 @@ was changed relative to the version used for the manuscript.
 
 ### Added
 
+* `BMIL/` — the model, losses, decoder, dataset and training helpers. The package
+  was previously imported by `train.py` and `report.py` but was not in the
+  repository, so nothing could run after a clone. It is included unchanged except
+  for two import repairs (below) and the omission of the unused Mask R-CNN script.
+* `BMIL/utils/metrics.py` — `SmoothedValue`, `MetricLogger` and `reduce_dict`,
+  vendored from the torchvision detection reference helpers (BSD-3, attributed) to
+  replace the non-installable `references` package.
 * `configs/` — YAML configuration for training, single-image inference and the
   offline demo, including the loss weights reported in the manuscript
   (α₁ = 0.8, α₂–α₅ = 1, β = 0.5, focal α = 0.75, γ = 2).
@@ -19,8 +26,9 @@ was changed relative to the version used for the manuscript.
 * `demo.py` — offline end-to-end example that runs without the clinical dataset,
   without checkpoints and without a GPU (`--random-weights`).
 * `predict.py` — batch inference over a directory, writes `predictions.csv`.
-* `scripts/build_coco.py` — converts images + masks + `Baseline.csv` into the
-  COCO layout expected by `train.py`; `--task subtype|birads|sln`.
+* `scripts/build_split.py` — assembles `train/` and `val/` as the paired
+  `img/` + `lab/` directories expected by `BMIL.data.dataset.COCODataset`
+  (deterministic split, `--link` and `--dry-run` supported).
 * `scripts/verify_weights.py` and `weights/manifest.json` — download links, target
   paths, size and SHA-256 verification for the three checkpoints.
 * `templates/report_template.html` — the report template, previously missing from
@@ -36,6 +44,9 @@ was changed relative to the version used for the manuscript.
 
 ### Changed
 
+* `requirements.txt`: `timm` added (the backbone uses `DropPath` and
+  `trunc_normal_` from `timm.models`), which the original environment dump also
+  contained but which was not documented as a dependency.
 * `requirements.txt` replaced: the previous file was a dump of a local conda
   environment containing 40+ `@ file:///home/conda/...` paths and both CUDA 11 and
   CUDA 12 packages, so it could not be installed on any other machine. PyTorch is
@@ -68,6 +79,17 @@ was changed relative to the version used for the manuscript.
   be reached; behaviour is unchanged).
 
 ### Fixed
+
+* `BMIL/utils/decoder.py` imported `FCOSPositions` from a top-level `FCOS_loss`
+  module that did not exist in the package; the class is defined in
+  `BMIL/loss/loss.py` and is now imported from there.
+* The subtype class order was corrected against `BMIL/data/dataset.py`: `LBC`
+  (lobular carcinoma in situ) is class 4 and `PBC` (invasive lobular carcinoma) is
+  class 5. The documentation, the label tables and the score lookups follow that
+  order; the score table is consistent with the histological category for every
+  class (benign 0, in-situ 1, invasive 2-3).
+* `BMIL/model/model.py` imports `cv2`; `opencv-python` is therefore a hard
+  dependency of training, not only of report generation.
 
 * `report.py` no longer crashes when `Temp/`, `Temp/temp.html` or the font file
   are missing.

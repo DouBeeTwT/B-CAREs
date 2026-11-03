@@ -103,7 +103,6 @@ INFER_KEYMAP: Dict[str, str] = {
     "weights.lymph": "lymph_weights",
     "device": "device",
     "output_dir": "output_dir",
-    "subtype_score": "subtype_score",
     "clinical.age": "age",
     "clinical.gender": "gender",
     "clinical.menopause": "menopause",
@@ -129,7 +128,6 @@ PREDICT_KEYMAP: Dict[str, str] = {
     "device": "device",
     "output_dir": "output_dir",
     "batch_size": "batch_size",
-    "subtype_score": "subtype_score",
     "random_weights": "random_weights",
 }
 
