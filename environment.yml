@@ -1,0 +1,14 @@
+name: bcares
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+# This file only creates the interpreter, because PyTorch has to be installed
+# from its own index (CUDA 11.8 vs CPU). After `conda activate bcares` run:
+#
+#   pip install -r requirements-torch-cu118.txt   # or requirements-torch-cpu.txt
+#   pip install -r requirements.txt
+#   pip install -e .                              # optional, installs the `bcares` package
+#
+# See docs/INSTALL.md for the full matrix (Linux + CUDA, Linux CPU, macOS CPU).

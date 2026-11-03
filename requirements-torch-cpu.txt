@@ -1,0 +1,5 @@
+# PyTorch, CPU build (Linux x86_64 and macOS, Python 3.10-3.11).
+# Enough for the offline demo, the tests and single-image inference.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.2.2
+torchvision==0.17.2

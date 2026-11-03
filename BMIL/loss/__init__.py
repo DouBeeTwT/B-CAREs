@@ -1,0 +1,1 @@
+from .loss import FCOSLoss as FCOSLoss
