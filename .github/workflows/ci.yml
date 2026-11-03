@@ -59,6 +59,10 @@ jobs:
       - name: Install package
         run: pip install -e .
 
+      # pytest is a development extra, not a runtime dependency (see pyproject.toml)
+      - name: Install test tooling
+        run: pip install pytest
+
       - name: Build a train/val split from the demo data
         run: python scripts/build_split.py --val-fraction 0.2 --seed 1 --out Data --link
 
