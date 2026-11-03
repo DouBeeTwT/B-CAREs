@@ -19,6 +19,24 @@ pytest.importorskip("torchvision", reason="torchvision is not installed")
 pytest.importorskip("BMIL", reason="the BMIL package is not available")
 
 
+def test_package_imports_in_any_order():
+    """`import BMIL` must not hit a circular import, whatever is imported first."""
+    import importlib
+
+    import BMIL
+
+    assert BMIL.__version__
+    for name in ("data", "loss", "model", "utils"):
+        assert importlib.import_module("BMIL.{}".format(name)) is not None
+
+    from BMIL.data.dataset import COCODataset, collate_fn_coco  # noqa: F401
+    from BMIL.loss.loss import FCOSLoss  # noqa: F401
+    from BMIL.model.model import BMIL as Net  # noqa: F401
+    from BMIL.utils.decoder import FCOSDecoder  # noqa: F401
+    from BMIL.utils.tester import tester  # noqa: F401
+    from BMIL.utils.trainer import trainer  # noqa: F401
+
+
 def test_report_single_image(tmp_path, monkeypatch):
     monkeypatch.chdir(ROOT)
     from report import main
