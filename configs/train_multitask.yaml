@@ -1,0 +1,66 @@
+# Training configuration for the single multi-task network described in the
+# manuscript (Methods, "Training process of deep learning model").
+#
+# The loss weights are the values reported in the response letter and in
+# Supplementary Tables 7-8: alpha_1 = 0.8, alpha_2..alpha_5 = 1, beta = 0.5,
+# focal-loss alpha = 0.75 and gamma = 2.
+#
+#   python train.py --config configs/train_multitask.yaml
+#   python train.py --config configs/train_multitask.yaml --batch_size 16   # CLI wins
+#
+# Expected data layout (see docs/DATA_FORMAT.md):
+#   <data.root>/train/<images + annotations>
+#   <data.root>/val/<images + annotations>
+
+data:
+  root: ./Data
+  batch_size: 32
+  image_size: 224
+  num_workers: 8
+
+model:
+  backbone_name: StarNet
+  protonet_name: DeepLabV3
+  class_num: 7          # 7 histological subtypes; use 5 for BI-RADS, 3 for SLN
+  in_channels: 3
+  hidden_channels: 256
+  neck_layers: 4
+  need_P2: false
+  need_P6: true
+  need_P7: true
+  mi_size: 32
+  stride: 8
+  use_sample: true
+  sample_radius: 1.5
+  base_num: 4
+  blender_size: 56
+  attention_size: 14
+
+loss:
+  task_weights: [0.8, 1.0, 1.0, 1.0, 1.0]   # alpha_1 .. alpha_5 of Eq. (2)
+  alpha_cls: 0.75                           # focal-loss alpha
+  gamma_cls: 2                              # focal-loss gamma
+  alpha_bag: null
+  gamma_bag: 2
+  iou_name: CIoU
+  score_threshold: 0.05
+  nms_threshold: 0.6
+  max_object_num: 7
+  topn: 50
+
+optim:
+  learning_rate: 1.0e-3
+  weight_decay: 5.0e-4
+  epoch_max: 150
+  epoch_qp: 120         # first epoch of the quasi-Pareto class re-weighting
+  seed: 1
+
+runtime:
+  device: auto          # "auto" -> cuda:0 if available, else cpu
+  world_size: 1
+  debug_anomaly: false  # true is very slow; only for debugging NaNs
+
+logging:
+  wandb: false
+  project_name: B-CAREs
+  exp_name: Exp001

@@ -1,0 +1,6 @@
+# PyTorch built against CUDA 11.8 (Linux x86_64). This is the combination used
+# for the experiments reported in the paper (driver >= 520, CUDA runtime bundled
+# in the wheels; a system CUDA toolkit is not required).
+--extra-index-url https://download.pytorch.org/whl/cu118
+torch==2.2.2+cu118
+torchvision==0.17.2+cu118

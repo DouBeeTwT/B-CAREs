@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "updated": "2026-10-26",
+  "note": [
+    "The three checkpoints are distributed through the institutional share links below",
+    "(controlled access, no re-identification possible). Download the archives in a browser,",
+    "extract the .pth file and place it exactly at `target_path`, relative to the repository root.",
+    "`size_bytes` and `sha256` are intentionally null until the release archive is frozen;",
+    "run `python scripts/verify_weights.py --compute` after placing the files and paste the",
+    "printed values here, then re-run `python scripts/verify_weights.py` (exit code 0)."
+  ],
+  "weights": [
+    {
+      "task": "birads",
+      "file": "Best.pth",
+      "target_path": "pth/QPMC_BIRADS_Exp001/Best.pth",
+      "url": "https://pan.sjtu.edu.cn/web/share/ef3c18cf0557a22a5d65b35fca88e442",
+      "size_bytes": null,
+      "sha256": null
+    },
+    {
+      "task": "subtype",
+      "file": "Last.pth",
+      "target_path": "pth/BMIL_v4_Exp010/Last.pth",
+      "url": "https://pan.sjtu.edu.cn/web/share/34371324234abf37f70ff9b4e43a1f99",
+      "size_bytes": null,
+      "sha256": null
+    },
+    {
+      "task": "lymph",
+      "file": "Best.pth",
+      "target_path": "pth/QPMC_Lymph_Exp002/Best.pth",
+      "url": "https://pan.sjtu.edu.cn/web/share/12b42e150ee920db0388446254c7342b",
+      "size_bytes": null,
+      "sha256": null
+    }
+  ]
+}
