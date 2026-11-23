@@ -106,7 +106,7 @@ dataset/test/lab/        430 masks, same stems
 | Index | Prefix | Code | Histological subtype | Images |
 |---:|---|---|---|---:|
 | 0 | FBB | BF | Benign fibroadenoma | 190 |
-| 1 | BIC | IBCN | Invasive breast carcinoma of no special type | 70 |
+| 1 | BIC | IBCN | Invasive breast cancer non-special | 70 |
 | 2 | DICS | DCIS | Ductal carcinoma in situ | 20 |
 | 3 | IDC | IDC | Invasive ductal carcinoma | 60 |
 | 4 | LBC | LCIS | Lobular carcinoma in situ | 10 |
