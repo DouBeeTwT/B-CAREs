@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this code or the accompanying data, please cite the manuscript below."
-title: "B-CAREs: Breast Cancer Assessment, Reporting and Risk Stratification system"
+title: "B-CAREs: Breast Cancer Assessment, Reporting, and Risk Stratification Executive System"
 abstract: >-
   Code for a multi-task ultrasound framework that predicts BI-RADS category,
   histological subtype and sentinel lymph node metastasis and assembles a
@@ -17,7 +17,7 @@ authors:
 # final author list is fixed.
 preferred-citation:
   type: article
-  title: "B-CAREs: Early Risk Screening and Hierarchical Management of Breast Cancer Based on Artificial Intelligence Systems"
+  title: "An integrated deep learning system for comprehensive risk stratification in breast cancer ultrasound"
   authors:
     - name: "The B-CAREs authors"
   year: 2026
