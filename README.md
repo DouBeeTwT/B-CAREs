@@ -1,6 +1,6 @@
 # B-CAREs
 
-**Breast Cancer Assessment, Reporting and Risk Stratification System** — code,
+**Breast Cancer Assessment, Reporting, and Risk Stratification Executive System (B-CAREs)** — code,
 configuration and a demonstration dataset for the multi-task ultrasound framework
 described in the manuscript.
 
@@ -28,7 +28,7 @@ described in the manuscript.
 
 ## Abstract
 
-Early screening for breast cancer using ultrasound has been shown to significantly improve patient prognosis. However, the widespread adoption of this method in large populations is limited by challenges in detection accuracy and the absence of standardized protocols. This study introduces the Breast Cancer Assessment, Reporting & Early-intervention System (B-CAREs) based on AI, which integrates advanced artificial intelligence algorithms, including large language models. The system is designed to automatically generate initial diagnostic reports. These reports encompass tumor identification, malignancy classification, histological subtype categorization, lymph node metastasis probability assessment, high-risk factor analysis, and treatment recommendations. We retrospectively trained and validated our model using data from 159,649 breast disease patients across seven clinical centers. The model achieved an average AUROC of 0.923 (95% CI 0.912–0.934), sensitivity of 0.906 (95% CI 0.895–0.917), and specificity of 0.907 (95% CI 0.898–0.916) on an independent test set, demonstrating strong multi-task prediction performance. Furthermore, 50 clinical experts assessed the reports based on guideline adherence and diagnostic accuracy, yielding an average score of 8.90 ± 0.25 out of 10. We subsequently conducted a prospective, double-blind validation study involving 1,229 patients from three independent multicenter cohorts. The results showed an average AUROC of 0.905 (95% CI 0.898–0.913), sensitivity of 0.889 (95% CI 0.880–0.898), and specificity of 0.890 (95% CI 0.881–0.899). The B-CAREs effectively increased the early screening detection rate by 25.4% and reduced the rate of missed and misdiagnoses by 19.4%. The B-CAREs system, through the implementation of an integrated "screening-stratification-interpretation" management workflow, enhances resource allocation efficiency in early-stage diagnosis and optimizes clinical decision-making capabilities, while concurrently advancing in-depth mechanistic understanding of disease pathogenesis.
+Breast cancer is the most common malignancy in women, and ultrasound (US) is the primary imaging tool for its initial evaluation. Although the Breast Imaging Reporting and Data System (BI-RADS) excels in morphological characterization and biopsy guidance, it does not inherently encode prognostic dimensions such as tumor invasiveness, sentinel lymph node (SLN) status, or histological subtypes. Here, we developed the Breast Cancer Assessment, Reporting, and Risk Stratification Executive System (B-CAREs), a multi-task deep learning framework with dynamic domain adaptation that processes standard US images to simultaneously perform nodule detection, BI-RADS classification, histological subtype prediction, and SLN metastasis prediction, while generating structured reports via a large language model interface. B-CAREs was developed and internally tested on 207,735 participants from five centers and externally validated on US videos from 11,514 participants across two independent centers. In the internal test set, B-CAREs achieved a nodule detection accuracy of 0.982 and AUROCs of 0.987 for malignancy, 0.903 for BI-RADS classification, 0.905 for histological subtype, and 0.893 for SLN metastasis prediction. The derived risk stratification model effectively categorized patients into low-, medium-, and high-risk groups (high-risk vs. medium: HR = 9.90; low-risk vs. medium: HR = 0.09), with a net reclassification improvement of 33.62% over BI-RADS alone, and these findings were confirmed in external validation (high-risk: HR = 8.90; low-risk: HR = 0.17). B-CAREs-generated structured reports received high expert-blind scores (9.31/10) and significantly improved physician diagnostic accuracy. These results indicate that routinely acquired US images carry image-derived information associated with histological subtype, sentinel lymph node status and outcome that is not captured by the BI-RADS category alone, and that deep learning can exploit this information to support preoperative risk stratification at the first visit.
 
 ## What is in this repository
 
@@ -114,8 +114,8 @@ dataset/test/lab/        430 masks, same stems
 | 6 | UDF | IBCU | Invasive breast cancer, undefined | 40 |
 | | | | **Total** | **430** |
 
-BI-RADS is encoded 0–4 (`1-3, 4a, 4b, 4c, 5-6`) and lymph node status 0–2
-(`0`, `1 or 2`, `more than 3` nodes). The full specification — column by column,
+BI-RADS is encoded 0–4 (`2–3, 4a, 4b, 4c, 5`) and lymph node status 0–2
+(`0`, `1–2`, `≥3` nodes). The full specification — column by column,
 class tables, preprocessing constants, COCO conversion and output formats — is in
 [docs/DATA_FORMAT.md](docs/DATA_FORMAT.md).
 
@@ -198,7 +198,7 @@ this release. Machine-readable metadata: [CITATION.cff](CITATION.cff).
 
 ```bibtex
 @software{bcares2026,
-  title  = {B-CAREs: Breast Cancer Assessment, Reporting and Risk Stratification System},
+  title  = {B-CAREs: Breast Cancer Assessment, Reporting, and Risk Stratification Executive System},
   author = {{The B-CAREs authors}},
   year   = {2026},
   note   = {Code release v1.1.0},
