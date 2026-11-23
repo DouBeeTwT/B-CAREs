@@ -106,12 +106,12 @@ dataset/test/lab/        430 masks, same stems
 | Index | Prefix | Code | Histological subtype | Images |
 |---:|---|---|---|---:|
 | 0 | FBB | BF | Benign fibroadenoma | 190 |
-| 1 | BIC | IBCN | Invasive breast cancer, no special type | 70 |
+| 1 | BIC | IBCN | Invasive breast carcinoma of no special type | 70 |
 | 2 | DICS | DCIS | Ductal carcinoma in situ | 20 |
 | 3 | IDC | IDC | Invasive ductal carcinoma | 60 |
 | 4 | LBC | LCIS | Lobular carcinoma in situ | 10 |
 | 5 | PBC | ILC | Invasive lobular carcinoma | 40 |
-| 6 | UDF | IBCU | Invasive breast cancer, undefined | 40 |
+| 6 | UDF | IBCU | Invasive breast cancer unclassified | 40 |
 | | | | **Total** | **430** |
 
 BI-RADS is encoded 0–4 (`2–3, 4a, 4b, 4c, 5`) and lymph node status 0–2
